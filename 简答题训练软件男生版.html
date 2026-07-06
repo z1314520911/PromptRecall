@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.5">
+  <title>锦囊妙答 · 简答题随机遮盖训练</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #eef3f9;
+      font-family: 'Segoe UI', 'Noto Serif SC', '楷体', 'KaiTi', '华文楷体', 'STKaiti', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      background-image: radial-gradient(circle at 10% 30%, #eaf1f7 0%, #d5e0eb 90%);
+    }
+    .container {
+      max-width: 900px;
+      width: 100%;
+      background: #f5f9fd;
+      border-radius: 48px;
+      box-shadow: 0 25px 50px -12px rgba(30, 60, 90, 0.25), inset 0 2px 8px rgba(255, 255, 255, 0.8);
+      padding: 2rem 2rem 2.2rem;
+      border: 1px solid #bccfe0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: #2a4a6a;
+      letter-spacing: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-bottom: 2px dashed #a8c0d6;
+      padding-bottom: 0.5rem;
+    }
+    h1 span {
+      background: #8ab3d0;
+      color: #1a3348;
+      font-size: 1.8rem;
+      padding: 0 14px;
+      border-radius: 40px;
+      letter-spacing: 2px;
+    }
+    .upload-area {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      background: #eaf1f8;
+      padding: 15px 20px;
+      border-radius: 60px;
+      border: 1px solid #b8cddf;
+      background: #eef4fa;
+    }
+    .file-label {
+      background: #4f8bb0;
+      color: white;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 6px rgba(30, 80, 120, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+    .file-label:hover {
+      background: #3a7299;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    .directory {
+      background: #e4eef5;
+      border-radius: 30px;
+      padding: 10px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+    }
+    .quick-nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .quick-nav select {
+      padding: 8px 16px;
+      border-radius: 30px;
+      border: 1px solid #9bb9d2;
+      background: #f8fbff;
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      min-width: 180px;
+      outline: none;
+      color: #1a3a55;
+    }
+    .quick-nav select:focus {
+      border-color: #4f8bb0;
+      box-shadow: 0 0 0 3px rgba(79, 139, 176, 0.2);
+    }
+    .wrong-section {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+      flex-wrap: wrap;
+    }
+    .wrong-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      max-width: 280px;
+      overflow-x: auto;
+    }
+    .wrong-chip {
+      background: #5f8eb0;
+      color: white;
+      border-radius: 16px;
+      padding: 2px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: 0.2s;
+      white-space: nowrap;
+    }
+    .wrong-chip:hover {
+      background: #3f7299;
+    }
+    .question-panel {
+      background: #f6faff;
+      border-radius: 40px;
+      padding: 25px 25px 20px;
+      border: 1px solid #c5d8e8;
+      box-shadow: inset 0 0 12px rgba(120, 170, 210, 0.12);
+      min-height: 260px;
+    }
+    .question-text {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #1a3a55;
+      margin-bottom: 25px;
+      line-height: 1.5;
+      padding-bottom: 15px;
+      border-bottom: 2px dotted #b8cddf;
+      word-break: break-word;
+    }
+    .answer-area {
+      background: #f8fbff;
+      padding: 18px 20px;
+      border-radius: 28px;
+      border: 1px solid #c5d8e8;
+      margin: 15px 0 20px;
+      min-height: 70px;
+      font-size: 1.2rem;
+      color: #1a3a55;
+      line-height: 1.7;
+      letter-spacing: 0.8px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 12px;
+      word-break: break-word;
+    }
+    .word-chip {
+      background: #dce8f2;
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      font-weight: 500;
+      color: #1a3a55;
+    }
+    .hidden-word {
+      background: #9bb9d2;
+      color: transparent;
+      user-select: none;
+      min-width: 50px;
+      text-align: center;
+      border-radius: 16px;
+      padding: 4px 14px;
+      display: inline-block;
+      font-weight: 500;
+    }
+    .hint-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 15px 0 5px;
+    }
+    .hint-btn {
+      background: #dce8f2;
+      border: 1px solid #a8c0d6;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-weight: 600;
+      color: #1a3a55;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: 0.15s;
+      box-shadow: 0 4px 8px rgba(60, 120, 170, 0.12);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.5px;
+    }
+    .hint-btn:hover {
+      background: #c5d8e8;
+    }
+    .full-btn {
+      background: #4f8bb0;
+      color: white;
+      border-color: #3a7299;
+    }
+    .full-btn:hover {
+      background: #3a7299;
+    }
+    .action-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 5px;
+    }
+    .wrong-btn {
+      background: transparent;
+      border: 1px solid #8ab3d0;
+      color: #2a4a6a;
+      padding: 8px 18px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.15s;
+    }
+    .wrong-btn:hover {
+      background: #e4eef5;
+    }
+    .wrong-btn.active-wrong {
+      background: #5f8eb0;
+      color: white;
+      border-color: #3f7299;
+    }
+    .stats {
+      font-size: 0.9rem;
+      color: #4a6a85;
+    }
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .note {
+      font-size: 0.8rem;
+      color: #6a8aa5;
+      text-align: center;
+    }
+    #clearWrongBtn {
+      color: #4a6a85;
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 16px;
+      transition: 0.15s;
+    }
+    #clearWrongBtn:hover {
+      background: #d5e0eb;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1><span>📜</span> 锦囊妙答 <span>🎋</span></h1>
+
+  <div class="upload-area">
+    <label for="fileUpload" class="file-label">📂 导入 Excel 题库</label>
+    <input type="file" id="fileUpload" accept=".xlsx,.xls,.csv">
+    <span style="color:#4a6a85;">Excel首列问题，第二列答案</span>
+  </div>
+
+  <div class="directory">
+    <div class="quick-nav">
+      <label>📌 选题：</label>
+      <select id="questionSelect"></select>
+    </div>
+    <div class="wrong-section">
+      <span>📋 错题本：</span>
+      <div class="wrong-list" id="wrongChipsContainer"></div>
+      <button id="clearWrongBtn">清空</button>
+    </div>
+  </div>
+
+  <div class="question-panel">
+    <div class="question-text" id="questionDisplay">✨ 请导入Excel题库</div>
+    <div class="answer-area" id="answerContainer"></div>
+    <div class="hint-buttons">
+      <button class="hint-btn" data-hint="1">🎴 锦囊一 (2词)</button>
+      <button class="hint-btn" data-hint="2">🎴 锦囊二 (5词)</button>
+      <button class="hint-btn" data-hint="3">🎴 锦囊三 (7词)</button>
+      <button class="hint-btn full-btn" id="fullRevealBtn">📖 完整显示</button>
+    </div>
+    <div class="action-row">
+      <button id="addWrongBtn" class="wrong-btn">🔖 加入错题本</button>
+      <div class="stats" id="progressStats"></div>
+    </div>
+  </div>
+  <div class="note">💡 锦囊随机展示不相邻词语 · 再次点击同一锦囊恢复遮盖 · 点击错题序号跳转</div>
+</div>
+
+<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+
+<script>
+  (function() {
+    let questions = [];
+    let wrongSet = new Set();
+    let currentQuestionId = null;
+    let currentAnswerWords = [];
+    let activeHintLevel = 0;
+
+    const fileInput = document.getElementById('fileUpload');
+    const questionSelect = document.getElementById('questionSelect');
+    const questionDisplay = document.getElementById('questionDisplay');
+    const answerContainer = document.getElementById('answerContainer');
+    const hintButtons = document.querySelectorAll('[data-hint]');
+    const fullRevealBtn = document.getElementById('fullRevealBtn');
+    const addWrongBtn = document.getElementById('addWrongBtn');
+    const clearWrongBtn = document.getElementById('clearWrongBtn');
+    const wrongChipsContainer = document.getElementById('wrongChipsContainer');
+    const progressStats = document.getElementById('progressStats');
+
+    function tokenizeWords(text) {
+      if (!text) return [];
+      const tokens = [];
+      const regex = /[\u4e00-\u9fff]+|[a-zA-Z0-9]+/g;
+      let match;
+      while ((match = regex.exec(text)) !== null) {
+        tokens.push(match[0]);
+      }
+      if (tokens.length === 0 && text.trim().length > 0) {
+        return text.trim().split(/\s+/).filter(s => s.length > 0);
+      }
+      return tokens.filter(t => t.trim().length > 0);
+    }
+
+    function getRandomNonAdjacentIndices(total, k) {
+      if (total === 0 || k <= 0) return [];
+      if (k >= total) return Array.from({ length: total }, (_, i) => i);
+      const maxAttempts = 150;
+      for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        const candidate = new Set();
+        const pool = [...Array(total).keys()].sort(() => Math.random() - 0.5);
+        for (let idx of pool) {
+          if (candidate.size >= k) break;
+          let adjacent = false;
+          for (let sel of candidate) {
+            if (Math.abs(sel - idx) === 1) { adjacent = true; break; }
+          }
+          if (!adjacent) candidate.add(idx);
+        }
+        if (candidate.size >= k) return Array.from(candidate).slice(0, k).sort((a,b)=>a-b);
+      }
+      return Array.from({ length: Math.min(k, total) }, (_, i) => i);
+    }
+
+    function renderAnswer(level) {
+      if (!currentAnswerWords.length || currentQuestionId === null) {
+        answerContainer.innerHTML = '<span style="color:#7a9ab5;">暂无答案</span>';
+        return;
+      }
+      const total = currentAnswerWords.length;
+      let revealedIndices = [];
+      if (level === 4) revealedIndices = Array.from({length: total}, (_,i)=>i);
+      else if (level === 1) revealedIndices = getRandomNonAdjacentIndices(total, Math.min(2, total));
+      else if (level === 2) revealedIndices = getRandomNonAdjacentIndices(total, Math.min(5, total));
+      else if (level === 3) revealedIndices = getRandomNonAdjacentIndices(total, Math.min(7, total));
+      
+      const revealedSet = new Set(revealedIndices);
+      let html = '';
+      for (let i = 0; i < total; i++) {
+        html += revealedSet.has(i) 
+          ? `<span class="word-chip">${escapeHtml(currentAnswerWords[i])}</span>` 
+          : `<span class="hidden-word">███</span>`;
+      }
+      answerContainer.innerHTML = html || '⚪';
+      activeHintLevel = level;
+    }
+
+    function escapeHtml(text) { return String(text).replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m]); }
+
+    function loadQuestion(id) {
+      const q = questions.find(q => q.id === id);
+      if (!q) return;
+      currentQuestionId = q.id;
+      questionDisplay.innerText = q.question;
+      currentAnswerWords = tokenizeWords(q.answer);
+      renderAnswer(0);
+      questionSelect.value = id;
+      updateWrongButtonState();
+      updateStats();
+    }
+
+    function updateWrongButtonState() {
+      if (currentQuestionId && wrongSet.has(currentQuestionId)) {
+        addWrongBtn.classList.add('active-wrong');
+        addWrongBtn.innerHTML = '🔖 已在错题本 ✓';
+      } else {
+        addWrongBtn.classList.remove('active-wrong');
+        addWrongBtn.innerHTML = '🔖 加入错题本';
+      }
+      renderWrongChips();
+    }
+
+    function renderWrongChips() {
+      wrongChipsContainer.innerHTML = '';
+      if (wrongSet.size === 0) {
+        wrongChipsContainer.innerHTML = '<span style="color:#7a9ab5;">暂无错题</span>';
+        return;
+      }
+      const sortedIds = Array.from(wrongSet).sort((a,b) => {
+        const idxA = questions.findIndex(q=>q.id===a);
+        const idxB = questions.findIndex(q=>q.id===b);
+        return idxA - idxB;
+      });
+      sortedIds.forEach(id => {
+        const idx = questions.findIndex(q => q.id === id);
+        const chip = document.createElement('span');
+        chip.className = 'wrong-chip';
+        chip.textContent = `题${idx+1}`;
+        chip.title = questions[idx]?.question || '';
+        chip.addEventListener('click', () => loadQuestion(id));
+        wrongChipsContainer.appendChild(chip);
+      });
+    }
+
+    function updateStats() {
+      if (!questions.length) { progressStats.innerText = '题库空'; return; }
+      const idx = questions.findIndex(q => q.id === currentQuestionId);
+      progressStats.innerText = `第 ${idx+1}/${questions.length} 题`;
+    }
+
+    function populateSelect() {
+      questionSelect.innerHTML = '';
+      if (!questions.length) {
+        questionSelect.innerHTML = '<option>-- 暂无题目 --</option>';
+        return;
+      }
+      questions.forEach((q, i) => {
+        const opt = document.createElement('option');
+        opt.value = q.id;
+        opt.textContent = `${i+1}. ${q.question.substring(0,22)}${q.question.length>22?'…':''}`;
+        questionSelect.appendChild(opt);
+      });
+      if (currentQuestionId && questions.some(q=>q.id===currentQuestionId)) questionSelect.value = currentQuestionId;
+      else if (questions.length) loadQuestion(questions[0].id);
+    }
+
+    hintButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const level = parseInt(btn.dataset.hint);
+        if (!currentQuestionId) return;
+        if (activeHintLevel === level) renderAnswer(0);
+        else renderAnswer(level);
+      });
+    });
+
+    fullRevealBtn.addEventListener('click', () => { if(currentQuestionId) renderAnswer(4); });
+
+    addWrongBtn.addEventListener('click', () => {
+      if (!currentQuestionId) return;
+      if (wrongSet.has(currentQuestionId)) wrongSet.delete(currentQuestionId);
+      else wrongSet.add(currentQuestionId);
+      updateWrongButtonState();
+    });
+
+    clearWrongBtn.addEventListener('click', () => {
+      if (wrongSet.size === 0) return;
+      wrongSet.clear();
+      updateWrongButtonState();
+    });
+
+    questionSelect.addEventListener('change', (e) => {
+      const id = Number(e.target.value);
+      if (id) loadQuestion(id);
+    });
+
+    async function parseExcel(file) {
+      const data = await file.arrayBuffer();
+      const workbook = XLSX.read(data, { type: 'array' });
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: '' });
+      if (rows.length < 2) throw new Error('至少需要标题行和数据');
+      return rows.slice(1)
+        .filter(r => r.length >= 2 && String(r[0]).trim() && String(r[1]).trim())
+        .map((r, i) => ({ id: Date.now() + i + Math.random(), question: String(r[0]).trim(), answer: String(r[1]).trim() }));
+    }
+
+    fileInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        const imported = await parseExcel(file);
+        if (!imported.length) { alert('未解析到题目'); return; }
+        questions = imported;
+        wrongSet.clear();
+        currentQuestionId = null;
+        populateSelect();
+        alert(`✅ 导入 ${questions.length} 题`);
+      } catch (err) {
+        alert('解析失败: ' + err.message);
+      } finally { fileInput.value = ''; }
+    });
+
+    function loadSample() {
+      if (questions.length) return;
+      questions = [
+        { id: 1001, question: '简述人工智能的主要伦理挑战？', answer: '隐私保护 算法偏见 责任归属 就业影响 自主决策 数据安全 透明性' },
+        { id: 1002, question: '什么是光合作用？', answer: '植物 利用 光能 二氧化碳 水 合成 有机物 释放 氧气 叶绿体' },
+        { id: 1003, question: '《红楼梦》林黛玉性格特点？', answer: '多愁善感 才华横溢 敏感 孤傲 真诚 叛逆 诗意 脆弱' }
+      ];
+      populateSelect();
+    }
+    window.addEventListener('load', loadSample);
+  })();
+</script>
+</body>
+</html>
