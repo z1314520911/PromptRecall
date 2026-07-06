@@ -16,10 +16,12 @@
 
 男生版：
 
-<img width="1022" height="744" alt="image" src="https://github.com/user-attachments/assets/224d8d4e-7338-4369-8b0d-1502dd5a5e7a" />
+<img width="1056" height="757" alt="image" src="https://github.com/user-attachments/assets/241cb63b-9ad6-45be-8c31-c4bfc8e1b266" />
+
 
 女生版：
 
-<img width="1029" height="721" alt="image" src="https://github.com/user-attachments/assets/273a9a54-0597-4f63-8116-9c18dd34743f" />
+<img width="1018" height="726" alt="image" src="https://github.com/user-attachments/assets/022103fc-cef0-4d24-917a-c53b91db4a80" />
+
 
 需要注意的是：本网页应用是本地使用，每次使用完记得用手机记录之前的错题，以备下次使用。
